@@ -1,24 +1,23 @@
 /*
- * ===============================================================
- * MAIN CLASS – UseCase2TrainConsistMgmt
- * ===============================================================
+ * ================================================================
+ * MAIN CLASS – UseCase3TrainConsistMgmnt
+ * ================================================================
  *
- * Use Case 2: Add Passenger Bogies to Train
+ * Use Case 3: Track Unique Bogie IDs
  *
  * Description:
- * This class demonstrates how passenger bogies can be
- * managed dynamically using ArrayList operations.
+ * This class ensures that duplicate bogie IDs are not
+ * added into the train formation using HashSet.
  *
  * At this stage, the application:
- * - Adds new bogies to the train
- * - Removes existing bogies
- * - Checks for bogie availability
- * - Displays the final consist
+ * - Stores bogie IDs
+ * - Prevents duplicates automatically
+ * - Displays unique bogie identifiers
  *
- * This maps CRUD operations using ArrayList.
+ * This maps uniqueness validation using Set.
  *
  * @author Developer
- * @version 2.0
+ * @version 3.0
 */
 package com.trainconsistmanagement;
 
@@ -28,31 +27,29 @@ public class TrainConsistMngmt {
 	
 	public static void main(String[] args) {
 		System.out.println("=========================================");
-		System.out.println("===UC2 - Add Passenger Boogies to train===");
+		System.out.println("===UC3 - Track Unique Bogie IDs===");
 		System.out.println("=========================================\n\n");
 		
-		List<String> trainConsist = new ArrayList<>();
-		int bogieCount = 0;
-		
-		trainConsist.add("Sleeper");
-		trainConsist.add("AC Chair");
-		trainConsist.add("First Class");
-		
-		System.out.println("After adding Bogies: ");
-		System.out.println(trainConsist);
-		
-		trainConsist.remove("AC Chair");
-		
-		System.out.println("\nAfter removing AC Chair:");
-		System.out.println(trainConsist);
-		
-		System.out.println("\nChecking if Sleeper exists: ");
-		System.out.println("Contains Sleeper? : " + trainConsist.contains("Sleeper"));
-		
-		System.out.println("\nFinal Train Passenger Consist: ");
-		System.out.println(trainConsist);
-		
-		System.out.println("\nUC2 operations completed successfully...");
+		// Create a Set 
+        Set<String> bogieIDs = new HashSet<>();
+
+        // Add bogie IDs
+        bogieIDs.add("BG101");
+        bogieIDs.add("BG102");
+        bogieIDs.add("BG103");
+        bogieIDs.add("BG104");
+
+        // Trying to add duplicates
+        bogieIDs.add("BG101");
+        bogieIDs.add("BG102");
+
+        System.out.println("Bogie IDs After Insertion:");
+        System.out.println(bogieIDs + "\n");
+
+        System.out.println("Note:");
+        System.out.println("Duplicates are automatically ignored by HashSet.\n");
+
+        System.out.println("UC3 uniqueness validation completed...");
 	}
 
 }
