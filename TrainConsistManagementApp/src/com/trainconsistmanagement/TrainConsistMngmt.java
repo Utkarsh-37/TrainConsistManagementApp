@@ -3,75 +3,82 @@
  * MAIN CLASS – TrainConsistMgmnt
  * ================================================================
  *
- * Use Case 12: Safety Compliance Check for Goods Bogies
+ * Use Case 13: Performance Comparison (Loops vs Streams)
  *
  * Description:
- * This class validates goods bogies against safety rules
- * using Java Streams and lambda expressions. It ensures
- * that cylindrical bogies only carry petroleum, preventing
- * unsafe cargo assignments.
+ * This class compares the performance of loop-based
+ * filtering versus stream-based filtering using
+ * System.nanoTime() for precise benchmarking.
  *
  * At this stage, the application:
- * - Creates a list of goods bogies
- * - Converts list into stream
- * - Applies safety rules using allMatch()
- * - Displays whether train formation is compliant
+ * - Creates a list of bogies
+ * - Filters bogies using traditional loops
+ * - Filters bogies using Streams
+ * - Measures execution time for both approaches
+ * - Displays results for comparison
  *
- * This maps safety compliance using Streams and conditional logic.
+ * This maps performance benchmarking using nanoTime().
  *
  * @author Developer
- * @version 12.0
+ * @version 13.0
 */
 package com.trainconsistmanagement;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TrainConsistMngmt {
 
-	static class GoodsBogie {
-        String type;   
-        String cargo; 
+	static class Bogie {
+        String name;
+        int capacity;
 
-        GoodsBogie(String type, String cargo) {
-            this.type = type;
-            this.cargo = cargo;
+        Bogie(String name, int capacity) {
+            this.name = name;
+            this.capacity = capacity;
         }
 
         @Override
         public String toString() {
-            return type + " -> " + cargo;
+            return name + " -> " + capacity;
         }
     }
 
     public static void main(String[] args) {
 
         System.out.println("==================================================");
-        System.out.println(" UC12 - Safety Compliance Check for Goods Bogies ");
+        System.out.println(" UC13 - Performance Comparison (Loops vs Streams) ");
         System.out.println("==================================================\n");
 
-        // Create list of goods bogies
-        List<GoodsBogie> bogies = new ArrayList<>();
-        bogies.add(new GoodsBogie("Cylindrical", "Petroleum")); // valid
-        bogies.add(new GoodsBogie("Box", "Coal"));              // valid
-        bogies.add(new GoodsBogie("Flatbed", "Grain"));         // valid
-        bogies.add(new GoodsBogie("Cylindrical", "Coal"));      // invalid
+        // Create list of bogies
+        List<Bogie> bogies = new ArrayList<>();
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("General", 90));
 
-        System.out.println("All Goods Bogies:");
-        for (GoodsBogie b : bogies) {
-            System.out.println(b);
+        // filtering using loops
+        long loopStart = System.nanoTime();
+        List<Bogie> loopFiltered = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.capacity > 50) {
+                loopFiltered.add(b);
+            }
         }
+        long loopEnd = System.nanoTime();
+        long loopDuration = loopEnd - loopStart;
 
-        // safety compliance check
-        boolean isSafe = bogies.stream().allMatch(b ->
-                !(b.type.equals("Cylindrical") && !b.cargo.equals("Petroleum"))
-        );
+        // filtering using streams
+        long streamStart = System.nanoTime();
+        List<Bogie> streamFiltered = bogies.stream()
+                                           .filter(b -> b.capacity > 50)
+                                           .collect(Collectors.toList());
+        long streamEnd = System.nanoTime();
+        long streamDuration = streamEnd - streamStart;
 
-        System.out.println("\nSafety Compliance Status: " + isSafe);
-        if(!isSafe)
-        	System.out.println("Train Formation is NOT SAFE");
-        else
-        	System.out.println("Train Formation is SAFE");
+        System.out.println("Loop Execution Time (ns): " + loopDuration);
+        System.out.println("Stream Execution Time (ns): " + streamDuration);
 
-        System.out.println("\nUC12 safety validation completed...");
+        System.out.println("\nUC13 performance benchmarking completed...");
     }
 }
