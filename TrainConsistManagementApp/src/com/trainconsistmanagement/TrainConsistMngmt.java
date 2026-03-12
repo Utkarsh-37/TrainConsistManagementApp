@@ -3,79 +3,61 @@
  * MAIN CLASS – TrainConsistMgmnt
  * ================================================================
  *
- * Use Case 15: Safe Cargo Assignment Using try-catch-finally
+ * Use Case 16: Sort Passenger Bogies by Capacity (Bubble Sort)
  *
  * Description:
- * This class demonstrates runtime safety validation for
- * cargo assignment. If unsafe cargo is assigned to a bogie,
- * a custom runtime exception is thrown, caught, and handled
- * gracefully with logging in a finally block.
+ * This class demonstrates manual sorting of passenger bogie
+ * capacities using the Bubble Sort algorithm. It avoids
+ * built-in library methods to show how sorting works internally.
  *
  * At this stage, the application:
- * - Defines a custom runtime exception CargoSafetyException
- * - Validates cargo assignment rules dynamically
- * - Uses try-catch-finally for safe handling
- * - Ensures application continues after failure
+ * - Creates an array of bogie capacities
+ * - Displays original order
+ * - Applies Bubble Sort logic
+ * - Displays sorted capacities
  *
- * This maps runtime safety handling using structured exceptions.
+ * This maps algorithmic fundamentals using nested loops and swaps.
  *
  * @author Developer
- * @version 15.0
-*/
+ * @version 16.0
+ */
 package com.trainconsistmanagement;
 
 public class TrainConsistMngmt {
 
-    static class CargoSafetyException extends RuntimeException {
-        public CargoSafetyException(String message) {
-            super(message);
-        }
-    }
+	public static void main(String[] args) {
+        System.out.println("==================================================");
+        System.out.println(" UC16 - Manual Sorting using Bubble Sort ");
+        System.out.println("==================================================\n");
 
-    static class GoodsBogie 
-    {
-        String shape;
-        String cargo;
+        // Create array 
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        GoodsBogie(String shape) 
-        {
-            this.shape = shape;
+        System.out.println("Original Capacities:");
+        for (int c : capacities) {
+            System.out.print(c + " ");
         }
 
-        // Assign cargo with safety validation
-        void assignCargo(String cargo) 
+        // Bubble Sort Algo
+        for (int i = 0; i < capacities.length - 1; i++) 
         {
-            try {
-                // Rule: Rectangular bogie cannot carry petroleum
-                if (shape.equals("Rectangular") && cargo.equals("Petroleum")) 
+            for (int j = 0; j < capacities.length - i - 1; j++) 
+            {
+                if (capacities[j] > capacities[j + 1]) 
                 {
-                    throw new CargoSafetyException("Unsafe cargo assignment!");
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
                 }
-                this.cargo = cargo;
-                System.out.println("Cargo assigned successfully -> " + cargo);
-                System.out.println("Cargo validation completed for " + shape + " bogie");
-            } catch (CargoSafetyException e) {
-                System.out.println("Error: " + e.getMessage());
-                System.out.println("Cargo validation completed for " + shape + " bogie");
-            } finally {
-                System.out.println("UC15 runtime handling completed...");
             }
         }
-    }
 
-    public static void main(String[] args) {
-        System.out.println("=============================================");
-        System.out.println(" UC15 - Safe Cargo Assignment ");
-        System.out.println("=============================================\n");
+        // sorted result
+        System.out.println("\n\nSorted Capacities (Ascending):");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
 
-        // Valid 
-        GoodsBogie cylindrical = new GoodsBogie("Cylindrical");
-        cylindrical.assignCargo("Petroleum");
-
-        System.out.println();
-
-        // Invalid
-        GoodsBogie rectangular = new GoodsBogie("Rectangular");
-        rectangular.assignCargo("Petroleum");
+        System.out.println("\n\nUC16 sorting completed...");
     }
 }
